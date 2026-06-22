@@ -2,52 +2,107 @@
 {% load static %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/register.css' %}">
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="login-container">
-    <div class="logo-top">
-        <img src="{% static 'images/logo.jpeg' %}" alt="MetroMed Logo" class="logomark">
-        <h2>MetroMed</h2>
-    </div>
+<div class="login-bg-animated"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
 
-    <div class="glass-panel">
-        <div class="panel-header">
-            <h3>Registro</h3>
-            <p>Únete a la comunidad MetroMed</p>
+<div class="login-page-wrapper">
+    <!-- Left: Branding -->
+    <div class="login-left">
+        <div class="brand-logo">
+            <img src="{% static 'images/logo.jpeg' %}" alt="MetroMed Logo">
+            <span>MetroMed</span>
         </div>
 
-        <form method="POST" action="{% url 'register' %}" class="login-form">
-            {% csrf_token %}
-            <div class="input-group">
-                <label for="nombre">&#128100; Nombre Completo</label>
-                <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" title="Solo se permiten letras y espacios" required>
+        <h1 class="tagline">
+            Únete a la<br>
+            <span class="highlight">comunidad</span><br>
+            MetroMed.
+        </h1>
+
+        <p class="tagline-sub">
+            Crea tu cuenta y comienza a disfrutar de todos
+            los beneficios de la plataforma.
+        </p>
+
+        <ul class="feature-list">
+            <li><div class="fi">🚇</div> Estado en tiempo real de estaciones</li>
+            <li><div class="fi">📋</div> Reportes y sugerencias de mejora</li>
+            <li><div class="fi">🔔</div> Notificaciones globales del sistema</li>
+            <li><div class="fi">🛡️</div> Acceso seguro con roles y permisos</li>
+        </ul>
+    </div>
+
+    <!-- Right: Form -->
+    <div class="login-right">
+        <div class="login-form-box">
+            <div class="form-header">
+                <h2>Crear cuenta</h2>
+                <p>Completa los datos para registrarte</p>
             </div>
 
-            <div class="input-group">
-                <label for="rol">&#128101; Tipo de Cuenta</label>
-                <select id="rol" name="rol" required>
-                    <option value="usuario">Pasajero</option>
-                    <option value="administrador">Administrador</option>
-                </select>
+            <form method="POST" action="{% url 'register' %}">
+                {% csrf_token %}
+
+                <div class="field-wrapper">
+                    <label for="nombre">Nombre completo</label>
+                    <div class="field-inner">
+                        <span class="field-icon">👤</span>
+                        <input type="text" id="nombre" name="nombre"
+                               placeholder="Tu nombre completo"
+                               pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$"
+                               title="Solo letras y espacios" required autocomplete="name">
+                    </div>
+                </div>
+
+                <div class="field-wrapper">
+                    <label for="rol">Tipo de cuenta</label>
+                    <div class="field-inner">
+                        <span class="field-icon">👥</span>
+                        <select id="rol" name="rol" required>
+                            <option value="usuario">Pasajero</option>
+                            <option value="administrador">Administrador</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="field-wrapper">
+                    <label for="email">Correo electrónico</label>
+                    <div class="field-inner">
+                        <span class="field-icon">✉️</span>
+                        <input type="email" id="email" name="email"
+                               placeholder="tucorreo@ejemplo.com"
+                               pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
+                               title="Debe ser un correo válido" required autocomplete="email">
+                    </div>
+                </div>
+
+                <div class="field-wrapper">
+                    <label for="password">Contraseña</label>
+                    <div class="field-inner">
+                        <span class="field-icon">🔒</span>
+                        <input type="password" id="password" name="password"
+                               placeholder="Mínimo 8 caracteres"
+                               pattern="^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]{8,}$"
+                               title="Mínimo 8 caracteres" required autocomplete="new-password">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login-submit">
+                    <span>Crear cuenta &rarr;</span>
+                </button>
+            </form>
+
+            <div class="form-footer">
+                <p class="switch-mode">¿Ya tienes cuenta?
+                    <a href="{% url 'home' %}">Inicia sesión aquí</a>
+                </p>
             </div>
-
-            <div class="input-group">
-                <label for="email">&#9993; Correo Electrónico</label>
-                <input type="email" id="email" name="email" placeholder="tucorreo@ejemplo.com" pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" title="Debe ser un correo válido" required>
-            </div>
-
-            <div class="input-group">
-                <label for="password">&#128274; Contraseña</label>
-                <input type="password" id="password" name="password" placeholder="••••••••" pattern="^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]{8,}$" title="La contraseña debe tener al menos 8 caracteres y no contener caracteres especiales extraños" required>
-            </div>
-
-            <button type="submit" class="btn-primary">Registrarse &rarr;</button>
-        </form>
-
-        <div class="panel-footer">
-            <p class="register-prompt">¿Ya tienes cuenta? <a href="{% url 'home' %}">Inicia sesión aquí</a></p>
         </div>
     </div>
 </div>

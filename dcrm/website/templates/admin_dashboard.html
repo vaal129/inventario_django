@@ -43,8 +43,25 @@
 
         <!-- Seccion Inicio -->
         <div id="home-section" class="content-panel spa-section" style="display: none;">
-            <h2>Bienvenido al Panel de Administración</h2>
-            <p>Selecciona una opción del menú para comenzar.</p>
+            <h2 style="font-size:1.3rem; color:#fff; margin-bottom:6px;">Panel de Control</h2>
+            <p style="color:rgba(255,255,255,0.4); font-size:0.88rem; margin-bottom:28px;">Resumen del sistema MetroMed</p>
+            <div class="stats-grid">
+                <div class="stat-card" onclick="showSection('users-section', document.querySelector('[onclick*=users-section]'))">
+                    <span class="stat-icon">👥</span>
+                    <div class="stat-value">{{ users|length }}</div>
+                    <div class="stat-label">Usuarios Registrados</div>
+                </div>
+                <div class="stat-card" onclick="showSection('reports-section', document.querySelector('[onclick*=reports-section]'))">
+                    <span class="stat-icon">📋</span>
+                    <div class="stat-value" id="stat-reports">—</div>
+                    <div class="stat-label">Reportes Activos</div>
+                </div>
+                <div class="stat-card" onclick="showSection('notifications-section', document.querySelector('[onclick*=notifications-section]'))">
+                    <span class="stat-icon">🔔</span>
+                    <div class="stat-value" id="stat-notifs">—</div>
+                    <div class="stat-label">Notificaciones Enviadas</div>
+                </div>
+            </div>
         </div>
 
         <!-- Seccion Usuarios -->
