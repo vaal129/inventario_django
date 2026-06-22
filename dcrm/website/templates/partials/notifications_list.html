@@ -1,0 +1,30 @@
+<table class="users-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Mensaje</th>
+            <th>Creado Por</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for n in notifications %}
+        <tr>
+            <td>{{ n.id }}</td>
+            <td>{{ n.message }}</td>
+            <td>{{ n.created_by.username|default:"Sistema" }}</td>
+            <td>{{ n.created_at|date:"Y-m-d H:i" }}</td>
+            <td>
+                <span class="status-text {% if n.is_active %}status-active{% else %}status-inactive{% endif %}">
+                    {% if n.is_active %}Activa{% else %}Inactiva{% endif %}
+                </span>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" style="text-align:center;">No hay notificaciones globales.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

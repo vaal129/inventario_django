@@ -1,0 +1,32 @@
+<table class="users-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Tipo</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in reports %}
+        <tr>
+            <td>{{ r.id }}</td>
+            <td>{{ r.user.username }}</td>
+            <td>{{ r.get_problem_type_display }}</td>
+            <td>{{ r.description }}</td>
+            <td>
+                <span class="role-badge {% if r.status == 'validado' %}role-admin{% elif r.status == 'pendiente' %}role-user{% else %}status-inactive{% endif %}">
+                    {{ r.get_status_display }}
+                </span>
+            </td>
+            <td>{{ r.created_at|date:"Y-m-d H:i" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6" style="text-align:center;">No hay reportes registrados.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
