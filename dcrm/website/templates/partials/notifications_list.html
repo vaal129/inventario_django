@@ -6,6 +6,7 @@
             <th>Creado Por</th>
             <th>Fecha</th>
             <th>Estado</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -20,10 +21,24 @@
                     {% if n.is_active %}Activa{% else %}Inactiva{% endif %}
                 </span>
             </td>
+            <td style="display:flex; gap:6px; flex-wrap:wrap;">
+                <form method="POST" action="/toggle_notification/{{ n.id }}/">
+                    {% csrf_token %}
+                    {% if n.is_active %}
+                        <button type="submit" class="btn-action btn-discard" title="Desactivar">Ocultar</button>
+                    {% else %}
+                        <button type="submit" class="btn-action btn-validate" title="Activar">Mostrar</button>
+                    {% endif %}
+                </form>
+                <form method="POST" action="/delete_notification/{{ n.id }}/" onsubmit="return confirm('¿Eliminar definitivamente esta notificación?')">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-action btn-delete" title="Eliminar">🗑️</button>
+                </form>
+            </td>
         </tr>
         {% empty %}
         <tr>
-            <td colspan="5" style="text-align:center; padding:20px; color:#aaa;">No hay notificaciones globales.</td>
+            <td colspan="6" style="text-align:center; padding:20px; color:#aaa;">No hay notificaciones globales.</td>
         </tr>
         {% endfor %}
     </tbody>

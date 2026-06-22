@@ -198,3 +198,25 @@ def create_notification(request):
             )
             messages.success(request, "Notificación global publicada")
     return redirect('admin_dashboard')
+
+@login_required
+def toggle_notification(request, notif_id):
+    if request.user.rol != 'administrador':
+        return redirect('home')
+    notif = get_object_or_404(GlobalNotification, id=notif_id)
+    if request.method == 'POST':
+        notif.is_active = not notif.is_active
+        notif.save()
+        status = "activada" if notif.is_active else "desactivada"
+        messages.success(request, f"Notificación {status} exitosamente")
+    return redirect('admin_dashboard')
+
+@login_required
+def delete_notification(request, notif_id):
+    if request.user.rol != 'administrador':
+        return redirect('home')
+    notif = get_object_or_404(GlobalNotification, id=notif_id)
+    if request.method == 'POST':
+        notif.delete()
+        messages.success(request, "Notificación eliminada exitosamente")
+    return redirect('admin_dashboard')
