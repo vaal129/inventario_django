@@ -1,0 +1,301 @@
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 260px;
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+
+.sidebar-logo img {
+    height: 30px;
+    margin-right: 10px;
+}
+
+.sidebar-logo h2 {
+    color: var(--text-white);
+    font-size: 1.2rem;
+}
+
+.panel-badge {
+    background: rgba(255, 165, 0, 0.2);
+    color: orange;
+    font-size: 0.7rem;
+    padding: 5px 15px;
+    margin: 0 20px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: bold;
+    border: 1px solid rgba(255, 165, 0, 0.3);
+}
+
+.sidebar-menu {
+    margin-top: 30px;
+    flex-grow: 1;
+}
+
+.menu-title {
+    font-size: 0.75rem;
+    color: var(--text-gray);
+    margin: 0 20px 10px;
+    letter-spacing: 1px;
+}
+
+.sidebar-menu ul {
+    list-style: none;
+}
+
+.sidebar-menu li a {
+    display: block;
+    padding: 12px 20px;
+    color: var(--text-gray);
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.sidebar-menu li a:hover,
+.sidebar-menu li.active a {
+    background: rgba(176, 38, 255, 0.1);
+    color: var(--text-white);
+    border-left: 4px solid var(--green-accent);
+}
+
+.sidebar-menu li.active a {
+    background: rgba(176, 38, 255, 0.15);
+    border-radius: 0 10px 10px 0;
+    margin-right: 10px;
+}
+
+.sidebar-footer {
+    padding: 20px;
+}
+
+.logout-btn {
+    color: var(--red-alert);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.logout-btn:hover {
+    text-decoration: underline;
+}
+
+/* Main Content */
+.main-content {
+    flex-grow: 1;
+    background: var(--primary-bg);
+    padding: 30px;
+}
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.top-header h1 {
+    font-size: 1.5rem;
+}
+
+.subtitle {
+    color: var(--text-gray);
+    font-size: 0.85rem;
+}
+
+.profile-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #ff8c00;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+}
+
+.content-panel {
+    background: var(--sidebar-bg);
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid var(--glass-border);
+}
+
+.panel-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.btn-new-user {
+    background: var(--green-accent);
+    color: black;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Table */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.users-table th {
+    text-align: left;
+    padding: 15px 10px;
+    color: var(--text-gray);
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.users-table td {
+    padding: 15px 10px;
+    font-size: 0.9rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.role-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+}
+
+.role-admin {
+    background: rgba(23, 125, 220, 0.15);
+    color: #40a9ff;
+    border: 1px solid rgba(23, 125, 220, 0.3);
+}
+
+.role-user {
+    background: rgba(176, 38, 255, 0.15);
+    color: var(--green-accent);
+    border: 1px solid rgba(176, 38, 255, 0.3);
+}
+
+.status-text {
+    font-size: 0.85rem;
+}
+
+.status-active {
+    color: var(--green-accent);
+}
+
+.status-inactive {
+    color: var(--text-gray);
+}
+
+/* Toggle Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+}
+
+.switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--glass-border);
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: var(--text-gray);
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: rgba(176, 38, 255, 0.3);
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+    background-color: var(--green-accent);
+}
+
+.slider.round {
+    border-radius: 20px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Edit Button and Modal */
+.btn-edit {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    margin-right: 15px;
+    vertical-align: middle;
+}
+
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 100;
+}
+.modal-content {
+    background: var(--sidebar-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px; width: 400px; max-width: 90%; padding: 30px;
+}
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;}
+.close-btn { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+
+/* Input group */
+.input-group { margin-bottom: 15px; text-align: left; }
+.input-group label { display: block; margin-bottom: 5px; font-size: 0.9rem; color: #ddd; }
+.input-group input, .input-group select {
+    width: 100%; padding: 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--glass-border);
+    color: white; border-radius: 8px;
+}
+.input-group option { background: var(--primary-bg); color: white; }
+.input-group input:focus, .input-group select:focus {
+    border-color: var(--green-accent); outline: none;
+}
+.btn-primary {
+    width: 100%; padding: 12px; background: var(--green-accent); 
+    color: black; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;
+}
