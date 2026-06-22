@@ -1,0 +1,50 @@
+:root {
+    --primary-bg: #1a0b2e;
+    --sidebar-bg: #2d1b4e;
+    --card-bg: rgba(45, 27, 78, 0.7);
+    --text-white: #ffffff;
+    --text-gray: #d4c5e6;
+    --green-accent: #b026ff; /* Violet Accent */
+    --green-dark: #6e10a8;
+    --green-hover: #d67bff;
+    --red-alert: #ff4d4f;
+    --blue-accent: #177ddc;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--primary-bg);
+    color: var(--text-white);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Flash Messages */
+.messages {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.msg {
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background: var(--card-bg);
+    border-left: 4px solid var(--green-accent);
+    color: white;
+    backdrop-filter: blur(10px);
+}
+
+.msg-error {
+    border-left-color: var(--red-alert);
+}
