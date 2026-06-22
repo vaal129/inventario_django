@@ -1,0 +1,71 @@
+@startuml MetroMed_Architecture
+title Arquitectura y Modelado UML - MetroMed
+
+package "Capa de Presentación (Frontend)" {
+  [Templates HTML] as Views
+  [Bootstrap Local CSS/JS] as CSS
+  [Vanilla JS SPA Logic] as JS
+}
+
+package "Capa de Lógica de Negocio (Backend - Django)" {
+  [URLs / Router] as Router
+  [Views (Controladores)] as Controllers
+  [Formularios / Validadores Regex] as Validators
+}
+
+package "Capa de Datos (Modelos)" {
+  [Models] as DataModels
+}
+
+database "Base de Datos (MySQL / SQLite)" as DB {
+  [Tablas]
+}
+
+Views --> Router : HTTP Request / AJAX Fetch
+Router --> Controllers : Route
+Controllers --> Validators : Validar datos de entrada (Regex)
+Controllers --> DataModels : Consultas ORM
+DataModels --> DB : SQL
+Controllers --> Views : HTTP Response / Render Partial
+
+note right of Validators
+  Aplica la Capa 3 de Seguridad
+  (Validación de Entradas)
+end note
+
+note left of Controllers
+  Aplica el Principio de Responsabilidad Única (SRP)
+  y Autorización por Roles (Capa 2 de Seguridad)
+end note
+
+' -- Modelo de Datos --
+class CustomUser {
+  + username : String
+  + email : String
+  + password : String
+  + rol : String
+}
+
+class Station {
+  + name : String
+  + is_active : Boolean
+}
+
+class Report {
+  + user_id : FK
+  + problem_type : String
+  + description : Text
+  + status : String
+  + created_at : DateTime
+}
+
+class GlobalNotification {
+  + message : Text
+  + created_by : FK
+  + created_at : DateTime
+  + is_active : Boolean
+}
+
+CustomUser "1" -- "0..*" Report : submits
+CustomUser "1" -- "0..*" GlobalNotification : creates
+@enduml
