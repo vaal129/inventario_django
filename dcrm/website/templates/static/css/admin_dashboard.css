@@ -297,5 +297,22 @@ input:checked + .slider:before {
 }
 .btn-primary {
     width: 100%; padding: 12px; background: var(--green-accent); 
-    color: black; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;
+    color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;
+    transition: background 0.2s;
 }
+.btn-primary:hover { background: var(--green-hover); }
+
+/* Report Action Buttons */
+.btn-action {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+}
+.btn-action:hover { opacity: 0.8; }
+.btn-validate { background: rgba(0, 200, 100, 0.15); color: #00c864; border: 1px solid #00c864; }
+.btn-discard  { background: rgba(255, 200, 0, 0.12); color: #ffc800; border: 1px solid #ffc800; }
+.btn-delete   { background: rgba(255, 77, 79, 0.12); color: #ff4d4f; border: 1px solid #ff4d4f; }

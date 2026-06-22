@@ -67,18 +67,20 @@
 .input-group label {
     display: block;
     margin-bottom: 8px;
-    color: #eee;
-    font-size: 0.9rem;
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 500;
 }
 
 .input-group input {
     width: 100%;
     padding: 12px 15px;
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 2px solid transparent;
     border-radius: 10px;
-    background: rgba(255,255,255,0.9);
-    color: #333;
+    background: #ffffff;
+    color: #111111;
     font-size: 1rem;
+    font-weight: 500;
     outline: none;
     transition: all 0.3s;
 }

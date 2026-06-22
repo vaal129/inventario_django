@@ -109,6 +109,7 @@
         <div id="reports-section" class="content-panel spa-section" style="display: none;">
             <div class="panel-header-row">
                 <h2>Reportes de Usuarios</h2>
+                <button class="btn-new-user" onclick="document.getElementById('new-report-modal').style.display='flex'">+ Nuevo Reporte</button>
             </div>
             <div class="table-responsive" id="reports-container">
                 <p>Cargando reportes...</p>
@@ -119,7 +120,7 @@
         <div id="notifications-section" class="content-panel spa-section" style="display: none;">
             <div class="panel-header-row">
                 <h2>Notificaciones Globales</h2>
-                <button class="btn-new-user" onclick="document.getElementById('new-notification-modal').style.display='flex'">Nueva Notificación</button>
+                <button class="btn-new-user" onclick="document.getElementById('new-notification-modal').style.display='flex'">+ Nueva Notificación</button>
             </div>
             <div class="table-responsive" id="notifications-container">
                 <p>Cargando notificaciones...</p>
@@ -134,6 +135,50 @@
     </main>
 </div>
 
+<!-- Modal: Crear Notificación Global -->
+<div id="new-notification-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Nueva Notificación Global</h3>
+            <button type="button" class="close-btn" onclick="document.getElementById('new-notification-modal').style.display='none'">&times;</button>
+        </div>
+        <form method="POST" action="{% url 'create_notification' %}">
+            {% csrf_token %}
+            <div class="input-group">
+                <label for="notif_message">Mensaje para todos los usuarios</label>
+                <textarea id="notif_message" name="message" rows="4" style="width:100%;padding:12px;border-radius:10px;background:#2d1b4e;color:#fff;border:1px solid rgba(255,255,255,0.2);font-size:1rem;" placeholder="Escribe el mensaje aquí..." required></textarea>
+            </div>
+            <button type="submit" class="btn-primary" style="margin-top:15px;">📣 Publicar Notificación</button>
+        </form>
+    </div>
+</div>
+
+<!-- Modal: Crear Reporte Manual (Admin) -->
+<div id="new-report-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Registrar Reporte</h3>
+            <button type="button" class="close-btn" onclick="document.getElementById('new-report-modal').style.display='none'">&times;</button>
+        </div>
+        <form method="POST" action="{% url 'submit_report' %}">
+            {% csrf_token %}
+            <div class="input-group">
+                <label for="admin_problem_type">Tipo de Problema</label>
+                <select id="admin_problem_type" name="problem_type" style="width:100%;padding:12px;border-radius:10px;background:#2d1b4e;color:#fff;border:1px solid rgba(255,255,255,0.2);" required>
+                    <option value="tecnico">Fallo Técnico</option>
+                    <option value="sugerencia">Sugerencia de Mejora</option>
+                    <option value="otro">Otro</option>
+                </select>
+            </div>
+            <div class="input-group" style="margin-top:15px;">
+                <label for="admin_description">Descripción</label>
+                <textarea id="admin_description" name="description" rows="4" style="width:100%;padding:12px;border-radius:10px;background:#2d1b4e;color:#fff;border:1px solid rgba(255,255,255,0.2);font-size:1rem;" placeholder="Describe el problema o sugerencia..." required></textarea>
+            </div>
+            <button type="submit" class="btn-primary" style="margin-top:15px;">📋 Registrar Reporte</button>
+        </form>
+    </div>
+</div>
+<!-- Modal: Editar Usuario -->
 <div id="edit-user-modal" class="modal-overlay" style="display: none;">
     <div class="modal-content">
         <div class="modal-header">

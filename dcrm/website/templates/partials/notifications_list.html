@@ -14,7 +14,7 @@
             <td>{{ n.id }}</td>
             <td>{{ n.message }}</td>
             <td>{{ n.created_by.username|default:"Sistema" }}</td>
-            <td>{{ n.created_at|date:"Y-m-d H:i" }}</td>
+            <td>{{ n.created_at|date:"d/m/Y H:i" }}</td>
             <td>
                 <span class="status-text {% if n.is_active %}status-active{% else %}status-inactive{% endif %}">
                     {% if n.is_active %}Activa{% else %}Inactiva{% endif %}
@@ -23,7 +23,7 @@
         </tr>
         {% empty %}
         <tr>
-            <td colspan="5" style="text-align:center;">No hay notificaciones globales.</td>
+            <td colspan="5" style="text-align:center; padding:20px; color:#aaa;">No hay notificaciones globales.</td>
         </tr>
         {% endfor %}
     </tbody>

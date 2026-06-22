@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import CustomUser, Station
+from .models import CustomUser, Station, Report, GlobalNotification
 import re
 
 def home(request):
@@ -111,7 +111,8 @@ def passenger_dashboard(request):
         return redirect('admin_dashboard')
         
     stations = Station.objects.all()
-    return render(request, 'passenger_dashboard.html', {'stations': stations})
+    notifications = GlobalNotification.objects.filter(is_active=True).order_by('-created_at')
+    return render(request, 'passenger_dashboard.html', {'stations': stations, 'notifications': notifications})
 
 @login_required
 def edit_user(request, user_id):
@@ -132,8 +133,6 @@ def edit_user(request, user_id):
         return redirect('admin_dashboard')
     return redirect('admin_dashboard')
 
-from .models import Report, GlobalNotification
-
 @login_required
 def api_reports(request):
     if request.user.rol != 'administrador':
@@ -147,3 +146,55 @@ def api_notifications(request):
         return redirect('home')
     notifications = GlobalNotification.objects.all().order_by('-created_at')
     return render(request, 'partials/notifications_list.html', {'notifications': notifications})
+
+@login_required
+def submit_report(request):
+    if request.method == 'POST':
+        problem_type = request.POST.get('problem_type')
+        description = request.POST.get('description')
+        if problem_type and description:
+            Report.objects.create(
+                user=request.user,
+                problem_type=problem_type,
+                description=description
+            )
+            messages.success(request, "¡Tu reporte ha sido enviado con éxito!")
+        return redirect('passenger_dashboard' if request.user.rol != 'administrador' else 'admin_dashboard')
+    return redirect('home')
+
+@login_required
+def update_report_status(request, report_id):
+    if request.user.rol != 'administrador':
+        return redirect('home')
+    report = get_object_or_404(Report, id=report_id)
+    if request.method == 'POST':
+        new_status = request.POST.get('status')
+        if new_status in ['Pendiente', 'En Revisión', 'Resuelto']:
+            report.status = new_status
+            report.save()
+            messages.success(request, f"Estado del reporte actualizado a {new_status}")
+    return redirect('admin_dashboard')
+
+@login_required
+def delete_report(request, report_id):
+    if request.user.rol != 'administrador':
+        return redirect('home')
+    report = get_object_or_404(Report, id=report_id)
+    if request.method == 'POST':
+        report.delete()
+        messages.success(request, "Reporte descartado exitosamente")
+    return redirect('admin_dashboard')
+
+@login_required
+def create_notification(request):
+    if request.user.rol != 'administrador':
+        return redirect('home')
+    if request.method == 'POST':
+        message = request.POST.get('message')
+        if message:
+            GlobalNotification.objects.create(
+                message=message,
+                created_by=request.user
+            )
+            messages.success(request, "Notificación global publicada")
+    return redirect('admin_dashboard')

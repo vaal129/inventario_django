@@ -11,4 +11,8 @@ urlpatterns = [
     path('edit-user/<int:user_id>/', views.edit_user, name='edit_user'),
     path('api/reports/', views.api_reports, name='api_reports'),
     path('api/notifications/', views.api_notifications, name='api_notifications'),
+    path('submit_report/', views.submit_report, name='submit_report'),
+    path('update_report_status/<int:report_id>/', views.update_report_status, name='update_report_status'),
+    path('delete_report/<int:report_id>/', views.delete_report, name='delete_report'),
+    path('create_notification/', views.create_notification, name='create_notification'),
 ]

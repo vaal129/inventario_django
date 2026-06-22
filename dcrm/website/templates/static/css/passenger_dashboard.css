@@ -184,3 +184,69 @@
 .station-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
 .station-item .active { color: var(--green-accent); }
 .station-item .inactive { color: var(--red-alert); }
+
+/* SPA Tabs */
+.spa-tab { animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+
+/* Notification Cards */
+.notification-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    background: var(--card-bg);
+    border: 1px solid rgba(176, 38, 255, 0.25);
+    border-left: 4px solid var(--green-accent);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 15px;
+    transition: transform 0.2s;
+}
+.notification-card:hover { transform: translateX(4px); }
+.notif-icon { font-size: 1.5rem; flex-shrink:0; }
+.notif-body { flex:1; }
+.notif-message { color: var(--text-white); font-size: 1rem; margin-bottom: 6px; }
+.notif-date { color: var(--text-gray); font-size: 0.8rem; }
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-gray);
+    font-size: 1.1rem;
+}
+
+/* Report Form Card */
+.report-form-card {
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 30px;
+    max-width: 600px;
+}
+.report-form-card .input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-white);
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+.report-form-card select,
+.report-form-card textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid rgba(176,38,255,0.3);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.05);
+    color: var(--text-white);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+.report-form-card select:focus,
+.report-form-card textarea:focus {
+    border-color: var(--green-accent);
+    box-shadow: 0 0 0 3px rgba(176,38,255,0.15);
+}
+.report-form-card option { background: #2d1b4e; }
+
