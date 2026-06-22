@@ -1,0 +1,186 @@
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar shared styles */
+.sidebar {
+    width: 260px;
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    padding: 30px 20px;
+}
+
+.sidebar-logo img {
+    height: 30px;
+    margin-right: 10px;
+}
+
+.sidebar-menu {
+    border-left: 4px solid var(--green-accent); 
+    margin-top: 20px;
+    flex-grow: 1;
+}
+
+.sidebar-menu ul { list-style: none; }
+
+.sidebar-menu li a {
+    display: block;
+    padding: 15px 30px;
+    color: var(--text-gray);
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.sidebar-menu li.active a {
+    background: rgba(176, 38, 255, 0.05);
+    color: var(--text-white);
+    font-weight: 600;
+}
+
+.sidebar-footer { padding: 20px; }
+.logout-btn { color: var(--red-alert); font-size: 0.9rem; text-decoration:none; }
+
+/* Main Content */
+.main-content {
+    flex-grow: 1;
+    background: var(--primary-bg);
+    padding: 30px 50px;
+}
+
+.top-header {
+    display: flex;
+    justify-content: flex-end; /* since search is middle we can space-between or flex-end */
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.search-bar {
+    margin-right: auto; 
+    margin-left: 20px;
+}
+
+.search-bar input {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 10px 20px;
+    color: white;
+    width: 300px;
+    outline: none;
+}
+
+.profile-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--green-accent);
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, rgba(176,38,255,0.1) 0%, rgba(0,0,0,0) 100%);
+    border: 1px solid rgba(176,38,255,0.2);
+    border-radius: 20px;
+    padding: 60px;
+    margin-top: 20px;
+}
+
+.hero-badge {
+    background: rgba(176,38,255,0.15);
+    color: var(--green-accent);
+    border: 1px solid rgba(176,38,255,0.3);
+    padding: 6px 15px;
+    border-radius: 20px;
+    display: inline-block;
+    font-size: 0.85rem;
+    margin-bottom: 25px;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    line-height: 1.1;
+    margin-bottom: 25px;
+}
+
+.hero-title span { color: var(--green-accent); }
+
+.hero-desc {
+    color: var(--text-gray);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin-bottom: 35px;
+}
+
+.feature-tags {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.tag {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.hero-actions { display: flex; gap: 20px; }
+
+.btn-primary {
+    background: var(--green-accent);
+    color: black;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(176,38,255,0.2); }
+
+.btn-outline {
+    background: transparent;
+    color: var(--text-white);
+    border: 1px solid var(--green-accent);
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-outline:hover { background: rgba(176,38,255,0.1); }
+
+/* Modal */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 100;
+}
+.modal-content {
+    background: var(--sidebar-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px; width: 400px; max-width: 90%; padding: 30px;
+}
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;}
+.close-btn { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+.station-list { max-height: 300px; overflow-y: auto; }
+.station-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.station-item .active { color: var(--green-accent); }
+.station-item .inactive { color: var(--red-alert); }
