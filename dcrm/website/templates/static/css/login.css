@@ -1,0 +1,136 @@
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* Use a gradient as placeholder for background image */
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1517409249622-4876b6b7a66f?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+    position: relative;
+    padding: 20px;
+}
+
+.logo-top {
+    position: absolute;
+    top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+}
+
+.logomark {
+    width: 60px;
+    height: auto;
+    margin-bottom: 5px;
+}
+
+.logo-top h2 {
+    color: var(--green-accent);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.glass-panel {
+    background: rgba(20, 30, 20, 0.6);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 40px 30px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 25px 45px rgba(0,0,0,0.5);
+    z-index: 5;
+}
+
+.panel-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.panel-header h3 {
+    color: var(--green-accent);
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+}
+
+.panel-header p {
+    color: #ddd;
+    font-size: 0.9rem;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #eee;
+    font-size: 0.9rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.9);
+    color: #333;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.input-group input:focus {
+    border-color: var(--green-accent);
+    box-shadow: 0 0 10px rgba(176, 38, 255, 0.3);
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: var(--green-dark);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 10px;
+}
+
+.btn-primary:hover {
+    background: var(--green-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(176, 38, 255, 0.2);
+}
+
+.panel-footer {
+    margin-top: 25px;
+    text-align: center;
+    font-size: 0.85rem;
+}
+
+.forgot-link {
+    color: var(--green-accent);
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.register-prompt {
+    color: #bbb;
+}
+
+.register-prompt a {
+    color: var(--text-white);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.register-prompt a:hover {
+    text-decoration: underline;
+}

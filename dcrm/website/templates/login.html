@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="logo-top">
+        <img src="{% static 'images/logo.jpeg' %}" alt="MetroMed Logo" class="logomark">
+        <h2>MetroMed</h2>
+    </div>
+
+    <div class="glass-panel">
+        <div class="panel-header">
+            <h3>Iniciar Sesión</h3>
+            <p>Accede a tu cuenta de MetroMed</p>
+        </div>
+
+        <form method="POST" action="{% url 'home' %}" class="login-form">
+            {% csrf_token %}
+            <div class="input-group">
+                <label for="email">&#9993; Correo Electrónico</label>
+                <input type="email" id="email" name="email" placeholder="tucorreo@ejemplo.com" pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" title="Debe ser un correo válido" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">&#128274; Contraseña</label>
+                <input type="password" id="password" name="password" placeholder="••••••••" pattern="^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]{8,}$" title="La contraseña debe tener al menos 8 caracteres y no contener caracteres especiales extraños" required>
+            </div>
+
+            <button type="submit" class="btn-primary">Iniciar Sesión &rarr;</button>
+        </form>
+
+        <div class="panel-footer">
+            <a href="#" class="forgot-link">&#10068; ¿Olvidaste tu contraseña?</a>
+            <p class="register-prompt">¿No tienes cuenta? <a href="{% url 'register' %}">Regístrate aquí</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
