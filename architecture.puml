@@ -1,79 +1,199 @@
 @startuml MetroMed_Architecture
-title Arquitectura y Modelado UML - MetroMed
+title Arquitectura y Modelado UML - MetroMed\nSistema de Gestión de Transporte Urbano
 
-package "Capa de Presentación (Frontend)" {
-  [Templates HTML] as Views
-  [Bootstrap Local CSS/JS] as CSS
-  [Vanilla JS SPA Logic] as JS
+skinparam {
+  BackgroundColor #1a0b2e
+  ArrowColor #b026ff
+  BorderColor #b026ff
+  FontColor #ffffff
+  PackageBorderColor #b026ff
+  PackageBackgroundColor #2d1b4e
+  ComponentBackgroundColor #3d1f6e
+  ComponentBorderColor #b026ff
+  ComponentFontColor #ffffff
+  DatabaseBackgroundColor #2d1b4e
+  DatabaseBorderColor #b026ff
+  NoteBackgroundColor #2d1b4e
+  NoteBorderColor #b026ff
+  ClassBackgroundColor #2d1b4e
+  ClassBorderColor #b026ff
+  ClassFontColor #ffffff
 }
 
-package "Capa de Lógica de Negocio (Backend - Django)" {
-  [URLs / Router] as Router
-  [Views (Controladores)] as Controllers
-  [Formularios / Validadores Regex] as Validators
-  [Django Auth & CSRF Middleware] as Security
+'================================================
+' DIAGRAMA DE ARQUITECTURA POR CAPAS (MVT)
+'================================================
+
+package "CAPA 1 - Seguridad: Autenticación (Django Auth)" #1a3a2e {
+  [Login con Email+Password] as Auth
+  [Sesión Activa @login_required] as Session
+  note bottom of Session
+    Patrón: DECORATOR
+    @login_required bloquea
+    el acceso a vistas protegidas
+    sin modificar su lógica interna.
+  end note
 }
 
-package "Capa de Datos (Modelos)" {
-  [Models] as DataModels
+package "Capa de Presentación - Frontend (SPA)" {
+  [Templates HTML\n(base.html + herencia)] as Templates
+  [Bootstrap Local CSS/JS\n(Sin CDNs externos)] as Bootstrap
+  [Vanilla JS SPA Logic\n(showSection / fetch API)] as JS
+
+  note right of Templates
+    Patrón: TEMPLATE METHOD
+    base.html define el esqueleto.
+    Los hijos rellenan {% block content %}.
+  end note
 }
 
-database "Base de Datos (MySQL / SQLite)" as DB {
-  [Tablas]
+package "CAPA 2 - Seguridad: Autorización por Roles" #1a3a2e {
+  [Verificación rol == 'administrador'\nen cada vista protegida] as RoleCheck
+  note bottom of RoleCheck
+    Dos dashboards distintos:
+    Admin → /admin-dashboard/
+    Pasajero → /dashboard/
+  end note
 }
 
-Views --> Router : HTTP Request / AJAX Fetch
-Router --> Controllers : Route
-Controllers --> Validators : Validar datos de entrada (Regex)
-Controllers --> DataModels : Consultas ORM
-DataModels --> DB : SQL
-Controllers --> Views : HTTP Response / Render Partial
+package "Capa de Lógica de Negocio - Backend Django" {
+  [urls.py - Router Central] as Router
+  [views.py - Controladores] as Controllers
+  [CAPA 3 - Validadores Regex\n(Frontend: pattern= / Backend: re)] as Validators
 
-Views --> Security : Token CSRF (Capa 4)
-Security --> Router : Autenticación (Capa 1)
+  note right of Router
+    Patrón: FRONT CONTROLLER
+    urls.py recibe TODAS las
+    peticiones y las delega
+    a la vista correcta.
+  end note
 
-note right of Validators
-  Aplica la Capa 3 de Seguridad
-  (Validación de Entradas Regex)
+  note left of Controllers
+    Patrones aplicados:
+    ✔ ACTIVE RECORD (.save/.delete)
+    ✔ REPOSITORY (.objects.filter)
+    ✔ FACTORY METHOD (create_user)
+    ✔ SINGLETON (settings.py / DB)
+    ✔ STRATEGY (hashing PBKDF2)
+    ✔ OBSERVER (Django Signals)
+  end note
+}
+
+package "CAPA 4 - Seguridad: Protección CSRF" #1a3a2e {
+  [Token {% csrf_token %}\nen todos los formularios POST] as CSRF
+  note bottom of CSRF
+    El Middleware de Django valida
+    automáticamente el token en
+    cada petición POST/PUT/DELETE.
+  end note
+}
+
+package "Capa de Datos - Modelos ORM (Active Record)" {
+  [models.py\nCustomUser / Station / Report / GlobalNotification] as Models
+}
+
+database "Base de Datos MySQL\n(metromed_django)" as DB {
+  [auth_user / website_customuser]
+  [website_station]
+  [website_report]
+  [website_globalnotification]
+}
+
+'================================================
+' RELACIONES DE FLUJO
+'================================================
+Templates --> Auth          : Petición HTTP\nPOST Login
+Auth --> Session            : Autenticar usuario
+Session --> Router          : Petición autenticada
+Router --> RoleCheck        : Verificar rol
+RoleCheck --> Controllers   : Ejecutar vista autorizada
+Controllers --> Validators  : Validar datos entrada (Regex)
+Controllers --> Models      : Consultas ORM
+Models --> DB               : SQL vía ORM
+Controllers --> Templates   : HTTP Response / render_partial
+Templates --> CSRF          : Incluye {% csrf_token %}
+CSRF --> Router             : Valida token en cada POST
+
+'================================================
+' DIAGRAMA DE CLASES (MODELOS)
+'================================================
+
+package "Modelo de Datos - Diagrama de Clases" {
+
+  class CustomUser {
+    -- Hereda de AbstractUser --
+    + id : BigInt (PK)
+    + username : CharField
+    + email : EmailField
+    + password : CharField (hashed)
+    + first_name : CharField
+    + last_name : CharField
+    + rol : CharField [administrador|usuario]
+    + is_active : BooleanField
+    + is_superuser : BooleanField
+    --
+    + create_user() : Factory Method
+    + check_password() : Strategy
+    + save() : Active Record
+  }
+
+  class Station {
+    + id : BigInt (PK)
+    + name : CharField
+    + is_active : BooleanField
+    --
+    + __str__() : String
+    + save() : Active Record
+  }
+
+  class Report {
+    -- Tipos: tecnico|sugerencia|otro --
+    -- Estado: pendiente|validado|descartado --
+    + id : BigInt (PK)
+    + user_id : ForeignKey → CustomUser
+    + problem_type : CharField
+    + description : TextField
+    + status : CharField
+    + created_at : DateTimeField (auto)
+    --
+    + save() : Active Record
+  }
+
+  class GlobalNotification {
+    + id : BigInt (PK)
+    + message : TextField
+    + created_by_id : ForeignKey → CustomUser
+    + created_at : DateTimeField (auto)
+    + is_active : BooleanField
+    --
+    + save() : Active Record
+  }
+}
+
+'================================================
+' RELACIONES ENTRE CLASES
+'================================================
+CustomUser "1" --o{ "0..*" Report          : "envía >"
+CustomUser "1" --o{ "0..*" GlobalNotification : "crea >"
+
+note bottom of CustomUser
+  Patrón: ACTIVE RECORD
+  Cada instancia encapsula
+  una fila de BD y su lógica
+  de persistencia.
+  
+  Patrón: FACTORY METHOD
+  create_user() delega la
+  encriptación de contraseña.
+  
+  Patrón: STRATEGY
+  Algoritmo de hashing
+  intercambiable (PBKDF2).
+  
+  Patrón: OBSERVER
+  Django Signals notifican
+  eventos post_save de forma
+  desacoplada.
 end note
 
-note left of Controllers
-  Aplica el Principio SRP, MVT, Active Record, 
-  Decorator, Singleton, Factory, Repository, 
-  Strategy, Observer y Front Controller.
-  (10 Patrones de Diseño implementados)
-  --
-  Autorización por Roles (Capa 2 de Seguridad)
-end note
-
-' -- Modelo de Datos --
-class CustomUser {
-  + username : String
-  + email : String
-  + password : String
-  + rol : String
-}
-
-class Station {
-  + name : String
-  + is_active : Boolean
-}
-
-class Report {
-  + user_id : FK
-  + problem_type : String
-  + description : Text
-  + status : String
-  + created_at : DateTime
-}
-
-class GlobalNotification {
-  + message : Text
-  + created_by : FK
-  + created_at : DateTime
-  + is_active : Boolean
-}
-
-CustomUser "1" -- "0..*" Report : submits
-CustomUser "1" -- "0..*" GlobalNotification : creates
 @enduml
