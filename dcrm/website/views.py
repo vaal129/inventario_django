@@ -149,9 +149,21 @@ def edit_user(request, user_id):
         
     user = get_object_or_404(CustomUser, id=user_id)
     if request.method == 'POST':
-        user.first_name = request.POST.get('nombre')
-        user.email = request.POST.get('email')
+        nombre = request.POST.get('nombre', '')
+        email = request.POST.get('email', '')
         rol = request.POST.get('rol')
+
+        if nombre and not re.match(r"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", nombre):
+            messages.error(request, "El nombre solo puede contener letras y espacios.")
+            return redirect('admin_dashboard')
+
+        if email and not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email):
+            messages.error(request, "Formato de correo inválido.")
+            return redirect('admin_dashboard')
+
+        user.first_name = nombre
+        if email:
+            user.email = email
 
         if rol in ['administrador', 'usuario'] and user.id != request.user.id:
             user.rol = rol
@@ -268,7 +280,11 @@ def update_profile(request):
         last_name = request.POST.get('last_name', '')
         email = request.POST.get('email', '')
 
-        if email and not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email):
+        if first_name and not re.match(r"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", first_name):
+            messages.error(request, "El nombre solo puede contener letras y espacios.")
+        elif last_name and not re.match(r"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", last_name):
+            messages.error(request, "El apellido solo puede contener letras y espacios.")
+        elif email and not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email):
             messages.error(request, "Formato de correo inválido.")
         else:
             user = request.user

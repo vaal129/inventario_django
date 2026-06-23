@@ -111,11 +111,11 @@
                     {% csrf_token %}
                     <div class="input-group">
                         <label for="first_name">Nombre</label>
-                        <input type="text" id="first_name" name="first_name" value="{{ request.user.first_name }}" required>
+                        <input type="text" id="first_name" name="first_name" value="{{ request.user.first_name }}" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" title="El nombre solo puede contener letras y espacios" required>
                     </div>
                     <div class="input-group" style="margin-top:15px;">
                         <label for="last_name">Apellido</label>
-                        <input type="text" id="last_name" name="last_name" value="{{ request.user.last_name }}" required>
+                        <input type="text" id="last_name" name="last_name" value="{{ request.user.last_name }}" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" title="El apellido solo puede contener letras y espacios" required>
                     </div>
                     <div class="input-group" style="margin-top:15px;">
                         <label for="email">Correo Electrónico</label>
