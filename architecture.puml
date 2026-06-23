@@ -11,6 +11,7 @@ package "Capa de Lógica de Negocio (Backend - Django)" {
   [URLs / Router] as Router
   [Views (Controladores)] as Controllers
   [Formularios / Validadores Regex] as Validators
+  [Django Auth & CSRF Middleware] as Security
 }
 
 package "Capa de Datos (Modelos)" {
@@ -28,14 +29,21 @@ Controllers --> DataModels : Consultas ORM
 DataModels --> DB : SQL
 Controllers --> Views : HTTP Response / Render Partial
 
+Views --> Security : Token CSRF (Capa 4)
+Security --> Router : Autenticación (Capa 1)
+
 note right of Validators
   Aplica la Capa 3 de Seguridad
-  (Validación de Entradas)
+  (Validación de Entradas Regex)
 end note
 
 note left of Controllers
-  Aplica el Principio de Responsabilidad Única (SRP)
-  y Autorización por Roles (Capa 2 de Seguridad)
+  Aplica el Principio SRP, MVT, Active Record, 
+  Decorator, Singleton, Factory, Repository, 
+  Strategy, Observer y Front Controller.
+  (10 Patrones de Diseño implementados)
+  --
+  Autorización por Roles (Capa 2 de Seguridad)
 end note
 
 ' -- Modelo de Datos --
