@@ -135,8 +135,9 @@
 
         <!-- Seccion Reportes -->
         <div id="reports-section" class="content-panel spa-section" style="display: none;">
-            <div class="panel-header-row">
+            <div class="panel-header-row" style="display:flex; justify-content:space-between; align-items:center;">
                 <h2>Reportes de Usuarios</h2>
+                <a href="{% url 'export_reports_csv' %}" class="btn-primary" style="background:#28a745; text-decoration:none;">📥 Exportar a Excel</a>
             </div>
             <div class="table-responsive" id="reports-container">
                 <p>Cargando reportes...</p>
@@ -199,8 +200,25 @@
 
         <!-- Seccion Perfil -->
         <div id="profile-section" class="content-panel spa-section" style="display: none;">
-            <h2>Mi Perfil</h2>
-            <p>Información del administrador.</p>
+            <h2 style="margin-bottom: 20px;">Mi Perfil</h2>
+            <div class="report-form-card" style="max-width: 600px;">
+                <form method="POST" action="{% url 'update_profile' %}">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <label for="first_name">Nombre</label>
+                        <input type="text" id="first_name" name="first_name" value="{{ request.user.first_name }}" required>
+                    </div>
+                    <div class="input-group" style="margin-top:15px;">
+                        <label for="last_name">Apellido</label>
+                        <input type="text" id="last_name" name="last_name" value="{{ request.user.last_name }}" required>
+                    </div>
+                    <div class="input-group" style="margin-top:15px;">
+                        <label for="email">Correo Electrónico</label>
+                        <input type="email" id="email" name="email" value="{{ request.user.email }}" required>
+                    </div>
+                    <button type="submit" class="btn-primary" style="margin-top:20px; width:100%;">Actualizar Perfil</button>
+                </form>
+            </div>
         </div>
     </main>
 </div>

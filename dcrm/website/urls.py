@@ -19,4 +19,6 @@ urlpatterns = [
     path('toggle_notification/<int:notif_id>/', views.toggle_notification, name='toggle_notification'),
     path('delete_notification/<int:notif_id>/', views.delete_notification, name='delete_notification'),
     path('toggle-station/<int:station_id>/', views.toggle_station, name='toggle_station'),
+    path('update-profile/', views.update_profile, name='update_profile'),
+    path('export-reports/', views.export_reports_csv, name='export_reports_csv'),
 ]

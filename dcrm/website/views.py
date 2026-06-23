@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from .models import CustomUser, Station, Report, GlobalNotification
 import re
+import csv
 
 def home(request):
     if request.user.is_authenticated:
@@ -258,3 +260,51 @@ def toggle_station(request, station_id):
         estado = 'activada' if station.is_active else 'desactivada'
         messages.success(request, f"Estación {station.name} {estado} exitosamente.")
     return redirect('admin_dashboard')
+
+@login_required
+def update_profile(request):
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name', '')
+        last_name = request.POST.get('last_name', '')
+        email = request.POST.get('email', '')
+
+        if email and not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email):
+            messages.error(request, "Formato de correo inválido.")
+        else:
+            user = request.user
+            user.first_name = first_name
+            user.last_name = last_name
+            if email:
+                user.email = email
+            user.save()
+            messages.success(request, "¡Tu perfil ha sido actualizado exitosamente!")
+
+    if request.user.rol == 'administrador':
+        return redirect('admin_dashboard')
+    else:
+        return redirect('passenger_dashboard')
+
+@login_required
+def export_reports_csv(request):
+    if request.user.rol != 'administrador':
+        return redirect('home')
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="reportes_metromed.csv"'
+    response.write(u'\ufeff'.encode('utf8')) # BOM for Excel UTF-8
+
+    writer = csv.writer(response)
+    writer.writerow(['ID', 'Usuario', 'Tipo', 'Descripción', 'Estado', 'Fecha'])
+
+    reports = Report.objects.all().order_by('-created_at')
+    for r in reports:
+        writer.writerow([
+            r.id,
+            r.user.username,
+            r.get_problem_type_display(),
+            r.description,
+            r.get_status_display(),
+            r.created_at.strftime('%Y-%m-%d %H:%M')
+        ])
+
+    return response
