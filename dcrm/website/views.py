@@ -97,7 +97,7 @@ def admin_dashboard(request):
         return redirect('passenger_dashboard')
         
     users = CustomUser.objects.all().order_by('id')
-    total_reports = Report.objects.filter(status__in=['pendiente', 'En Revisión']).count()
+    total_reports = Report.objects.filter(status='pendiente').count()
     total_notifs = GlobalNotification.objects.count()
     return render(request, 'admin_dashboard.html', {
         'users': users,
@@ -193,7 +193,7 @@ def update_report_status(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     if request.method == 'POST':
         new_status = request.POST.get('status')
-        if new_status in ['Pendiente', 'En Revisión', 'Resuelto']:
+        if new_status in ['pendiente', 'validado', 'descartado']:
             report.status = new_status
             report.save()
             messages.success(request, f"Estado del reporte actualizado a {new_status}")
