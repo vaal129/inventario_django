@@ -21,6 +21,7 @@
                 <li class="active"><a href="#" onclick="showSection('users-section', this)">Gestión de Usuarios</a></li>
                 <li><a href="#" onclick="showSection('reports-section', this)">Reportes</a></li>
                 <li><a href="#" onclick="showSection('notifications-section', this)">Notificaciones</a></li>
+                <li><a href="#" onclick="showSection('stations-section', this)">🚇 Estaciones</a></li>
                 <li><a href="#" onclick="showSection('profile-section', this)">Mi Perfil</a></li>
             </ul>
         </div>
@@ -153,6 +154,51 @@
             </div>
         </div>
         
+        </div>
+
+        <!-- Seccion Estaciones -->
+        <div id="stations-section" class="content-panel spa-section" style="display: none;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <div>
+                    <h2 style="font-size:1.3rem; color:#fff; margin-bottom:4px;">🚇 Gestión de Estaciones</h2>
+                    <p style="color:rgba(255,255,255,0.4); font-size:0.88rem;">Activa o desactiva estaciones del Metro de Medellín</p>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Estación</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for station in stations %}
+                        <tr>
+                            <td>{{ station.id }}</td>
+                            <td>{{ station.name }}</td>
+                            <td>
+                                <span class="role-badge {% if station.is_active %}role-admin{% else %}status-inactive{% endif %}">
+                                    {% if station.is_active %}🟢 Activa{% else %}🔴 Inactiva{% endif %}
+                                </span>
+                            </td>
+                            <td>
+                                <form method="POST" action="/toggle-station/{{ station.id }}/" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-action {% if station.is_active %}btn-discard{% else %}btn-validate{% endif %}">
+                                        {% if station.is_active %}⏸ Desactivar{% else %}▶ Activar{% endif %}
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <!-- Seccion Perfil -->
         <div id="profile-section" class="content-panel spa-section" style="display: none;">
             <h2>Mi Perfil</h2>

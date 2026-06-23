@@ -99,10 +99,12 @@ def admin_dashboard(request):
     users = CustomUser.objects.all().order_by('id')
     total_reports = Report.objects.filter(status='pendiente').count()
     total_notifs = GlobalNotification.objects.count()
+    stations = Station.objects.all().order_by('name')
     return render(request, 'admin_dashboard.html', {
         'users': users,
         'total_reports': total_reports,
-        'total_notifs': total_notifs
+        'total_notifs': total_notifs,
+        'stations': stations,
     })
 
 @login_required
@@ -243,4 +245,16 @@ def delete_notification(request, notif_id):
     if request.method == 'POST':
         notif.delete()
         messages.success(request, "Notificación eliminada exitosamente")
+    return redirect('admin_dashboard')
+
+@login_required
+def toggle_station(request, station_id):
+    if request.user.rol != 'administrador':
+        return redirect('home')
+    station = get_object_or_404(Station, id=station_id)
+    if request.method == 'POST':
+        station.is_active = not station.is_active
+        station.save()
+        estado = 'activada' if station.is_active else 'desactivada'
+        messages.success(request, f"Estación {station.name} {estado} exitosamente.")
     return redirect('admin_dashboard')
