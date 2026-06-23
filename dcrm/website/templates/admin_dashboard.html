@@ -183,7 +183,7 @@
                                 </span>
                             </td>
                             <td>
-                                <form method="POST" action="/toggle-station/{{ station.id }}/" style="display:inline;">
+                                <form method="POST" action="{% url 'toggle_station' station.id %}" style="display:inline;">
                                     {% csrf_token %}
                                     <button type="submit" class="btn-action {% if station.is_active %}btn-discard{% else %}btn-validate{% endif %}">
                                         {% if station.is_active %}⏸ Desactivar{% else %}▶ Activar{% endif %}
