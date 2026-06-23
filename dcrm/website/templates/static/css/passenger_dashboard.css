@@ -577,6 +577,41 @@ input:checked + .slider::before { transform: translateX(16px); }
 /* Report Form Card */
 .report-form-card {
     background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 16px; padding: 35px; max-width: 600px;
+    border: 1px solid rgba(176,38,255,0.2);
+    border-radius: 16px; 
+    padding: 35px; 
+    max-width: 600px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
+.report-form-card .input-group {
+    margin-bottom: 20px;
+}
+.report-form-card .input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: rgba(255,255,255,0.85);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.report-form-card select,
+.report-form-card textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.04);
+    color: #fff;
+    font-size: 0.95rem;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: all 0.25s ease;
+}
+.report-form-card select:focus,
+.report-form-card textarea:focus {
+    border-color: #b026ff;
+    background: rgba(176,38,255,0.05);
+    box-shadow: 0 0 0 3px rgba(176,38,255,0.15);
+}
+.report-form-card option { background: #1a0b2e; }

@@ -8,6 +8,7 @@ urlpatterns = [
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path('dashboard/', views.passenger_dashboard, name='passenger_dashboard'),
     path('toggle-user/<int:user_id>/', views.toggle_user_status, name='toggle_user_status'),
+    path('delete-user/<int:user_id>/', views.delete_user, name='delete_user'),
     path('edit-user/<int:user_id>/', views.edit_user, name='edit_user'),
     path('api/reports/', views.api_reports, name='api_reports'),
     path('api/notifications/', views.api_notifications, name='api_notifications'),

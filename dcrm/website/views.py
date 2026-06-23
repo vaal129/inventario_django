@@ -47,7 +47,8 @@ def register_user(request):
         nombre = request.POST.get('nombre', '')
         email = request.POST.get('email', '')
         password = request.POST.get('password', '')
-        rol = request.POST.get('rol', 'usuario')
+        confirm_password = request.POST.get('confirm_password', '')
+        rol = 'usuario'
         
         if not re.match(r"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", nombre):
             messages.error(request, "El nombre solo puede contener letras y espacios.")
@@ -55,6 +56,10 @@ def register_user(request):
             
         if not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email):
             messages.error(request, "Formato de correo inválido.")
+            return redirect('register')
+            
+        if password != confirm_password:
+            messages.error(request, "Las contraseñas no coinciden.")
             return redirect('register')
             
         if not re.match(r"^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]{8,}$", password):
@@ -92,7 +97,13 @@ def admin_dashboard(request):
         return redirect('passenger_dashboard')
         
     users = CustomUser.objects.all().order_by('id')
-    return render(request, 'admin_dashboard.html', {'users': users})
+    total_reports = Report.objects.filter(status__in=['pendiente', 'En Revisión']).count()
+    total_notifs = GlobalNotification.objects.count()
+    return render(request, 'admin_dashboard.html', {
+        'users': users,
+        'total_reports': total_reports,
+        'total_notifs': total_notifs
+    })
 
 @login_required
 def toggle_user_status(request, user_id):
@@ -103,6 +114,19 @@ def toggle_user_status(request, user_id):
     if user.id != request.user.id:  # Can't disable oneself
         user.is_active = not user.is_active
         user.save()
+    return redirect('admin_dashboard')
+
+@login_required
+def delete_user(request, user_id):
+    if request.user.rol != 'administrador':
+        return redirect('home')
+    
+    user = get_object_or_404(CustomUser, id=user_id)
+    if user.id != request.user.id:
+        user.delete()
+        messages.success(request, f"Usuario {user.username} eliminado correctamente.")
+    else:
+        messages.error(request, "No puedes eliminar tu propia cuenta de administrador.")
     return redirect('admin_dashboard')
 
 @login_required
