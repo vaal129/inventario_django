@@ -9,7 +9,7 @@ import csv
 
 def home(request):
     if request.user.is_authenticated:
-        if request.user.rol == 'administrador':
+        if (request.user.rol == 'administrador' or request.user.is_superuser):
             return redirect('admin_dashboard')
         else:
             return redirect('passenger_dashboard')
@@ -34,7 +34,7 @@ def home(request):
                 return redirect('home')
             
             login(request, user)
-            if user.rol == 'administrador':
+            if user.rol == 'administrador' or user.is_superuser:
                 return redirect('admin_dashboard')
             else:
                 return redirect('passenger_dashboard')
@@ -95,7 +95,7 @@ def logout_user(request):
 
 @login_required
 def admin_dashboard(request):
-    if request.user.rol != 'administrador':
+    if (request.user.rol != 'administrador' and not request.user.is_superuser):
         return redirect('passenger_dashboard')
         
     users = CustomUser.objects.all().order_by('id')
@@ -111,7 +111,7 @@ def admin_dashboard(request):
 
 @login_required
 def toggle_user_status(request, user_id):
-    if request.user.rol != 'administrador':
+    if (request.user.rol != 'administrador' and not request.user.is_superuser):
         return redirect('home')
     
     user = get_object_or_404(CustomUser, id=user_id)
@@ -122,7 +122,7 @@ def toggle_user_status(request, user_id):
 
 @login_required
 def delete_user(request, user_id):
-    if request.user.rol != 'administrador':
+    if (request.user.rol != 'administrador' and not request.user.is_superuser):
         return redirect('home')
     
     user = get_object_or_404(CustomUser, id=user_id)
@@ -135,7 +135,7 @@ def delete_user(request, user_id):
 
 @login_required
 def passenger_dashboard(request):
-    if request.user.rol == 'administrador':
+    if (request.user.rol == 'administrador' or request.user.is_superuser):
         return redirect('admin_dashboard')
         
     stations = Station.objects.all()
@@ -144,7 +144,7 @@ def passenger_dashboard(request):
 
 @login_required
 def edit_user(request, user_id):
-    if request.user.rol != 'administrador':
+    if (request.user.rol != 'administrador' and not request.user.is_superuser):
         return redirect('home')
         
     user = get_object_or_404(CustomUser, id=user_id)
@@ -163,14 +163,14 @@ def edit_user(request, user_id):
 
 @login_required
 def api_reports(request):
-    if request.user.rol != 'administrador':
+    if (request.user.rol != 'administrador' and not request.user.is_superuser):
         return redirect('home')
     reports = Report.objects.all().order_by('-created_at')
     return render(request, 'partials/reports_list.html', {'reports': reports})
 
 @login_required
 def api_notifications(request):
-    if request.user.rol != 'administrador':
+    if (request.user.rol != 'administrador' and not request.user.is_superuser):
         return redirect('home')
     notifications = GlobalNotification.objects.all().order_by('-created_at')
     return render(request, 'partials/notifications_list.html', {'notifications': notifications})
@@ -187,12 +187,12 @@ def submit_report(request):
                 description=description
             )
             messages.success(request, "¡Tu reporte ha sido enviado con éxito!")
-        return redirect('passenger_dashboard' if request.user.rol != 'administrador' else 'admin_dashboard')
+        return redirect('passenger_dashboard' if (request.user.rol != 'administrador' and not request.user.is_superuser) else 'admin_dashboard')
     return redirect('home')
 
 @login_required
 def update_report_status(request, report_id):
-    if request.user.rol != 'administrador':
+    if (request.user.rol != 'administrador' and not request.user.is_superuser):
         return redirect('home')
     report = get_object_or_404(Report, id=report_id)
     if request.method == 'POST':
@@ -205,7 +205,7 @@ def update_report_status(request, report_id):
 
 @login_required
 def delete_report(request, report_id):
-    if request.user.rol != 'administrador':
+    if (request.user.rol != 'administrador' and not request.user.is_superuser):
         return redirect('home')
     report = get_object_or_404(Report, id=report_id)
     if request.method == 'POST':
@@ -215,7 +215,7 @@ def delete_report(request, report_id):
 
 @login_required
 def create_notification(request):
-    if request.user.rol != 'administrador':
+    if (request.user.rol != 'administrador' and not request.user.is_superuser):
         return redirect('home')
     if request.method == 'POST':
         message = request.POST.get('message')
@@ -229,7 +229,7 @@ def create_notification(request):
 
 @login_required
 def toggle_notification(request, notif_id):
-    if request.user.rol != 'administrador':
+    if (request.user.rol != 'administrador' and not request.user.is_superuser):
         return redirect('home')
     notif = get_object_or_404(GlobalNotification, id=notif_id)
     if request.method == 'POST':
@@ -241,7 +241,7 @@ def toggle_notification(request, notif_id):
 
 @login_required
 def delete_notification(request, notif_id):
-    if request.user.rol != 'administrador':
+    if (request.user.rol != 'administrador' and not request.user.is_superuser):
         return redirect('home')
     notif = get_object_or_404(GlobalNotification, id=notif_id)
     if request.method == 'POST':
@@ -251,7 +251,7 @@ def delete_notification(request, notif_id):
 
 @login_required
 def toggle_station(request, station_id):
-    if request.user.rol != 'administrador':
+    if (request.user.rol != 'administrador' and not request.user.is_superuser):
         return redirect('home')
     station = get_object_or_404(Station, id=station_id)
     if request.method == 'POST':
@@ -279,14 +279,14 @@ def update_profile(request):
             user.save()
             messages.success(request, "¡Tu perfil ha sido actualizado exitosamente!")
 
-    if request.user.rol == 'administrador':
+    if (request.user.rol == 'administrador' or request.user.is_superuser):
         return redirect('admin_dashboard')
     else:
         return redirect('passenger_dashboard')
 
 @login_required
 def export_reports_csv(request):
-    if request.user.rol != 'administrador':
+    if (request.user.rol != 'administrador' and not request.user.is_superuser):
         return redirect('home')
 
     response = HttpResponse(content_type='text/csv')
