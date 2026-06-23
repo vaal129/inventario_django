@@ -33,11 +33,22 @@ El sistema aplica seguridad rigurosa mediante 4 capas:
 
 ## 📐 Patrones de Diseño y Principios
 
-- **Patrón MVC/MVT:** Separación clara entre modelos (`models.py`), lógica de control (`views.py`) y presentación (`templates/`).
+- **Patrón Arquitectónico MVT (Model-View-Template):** Adaptación del clásico MVC. Separa la lógica de base de datos (`models.py`), la lógica de negocio (`views.py`) y la presentación visual (`templates/`).
+- **Patrón Active Record:** Presente en el ORM de Django. Los modelos (`CustomUser`, `Report`, `GlobalNotification`) envuelven una fila de la base de datos e incluyen la lógica de persistencia.
+- **Patrón Decorator (Decorador):** Utilizado explícitamente en `views.py` (`@login_required`) para extender el comportamiento de "verificación de sesión" sin alterar la función interna.
+- **Patrón Template Method (Método Plantilla):** Aplicado en las plantillas HTML (herencia). El `base.html` define el esqueleto principal y deja bloques (`{% block content %}`) para que las vistas hijas lo rellenen.
+- **Patrón Front Controller (Controlador Frontal):** En Django, `urls.py` recibe todas las peticiones web y actúa como un controlador centralizado que delega a la vista correspondiente.
+- **Patrón Repository / DAO (Data Access Object):** Utilizado a través del "Manager" de Django. El objeto `.objects` (ej: `Report.objects.filter()`) abstrae las consultas SQL y actúa como repositorio.
+- **Patrón Factory Method (Método Fábrica):** Utilizado al instanciar usuarios (`CustomUser.objects.create_user()`) para delegar el proceso complejo de empaquetado y encriptación de contraseñas.
+- **Patrón Singleton:** Usado internamente por Django para gestionar la conexión a la base de datos (MySQL) y las configuraciones globales (`settings.py`), garantizando una única instancia en ejecución.
+- **Patrón Strategy (Estrategia):** Aplicado por el sistema de autenticación de contraseñas de Django, permitiendo cambiar dinámicamente el algoritmo de hashing (PBKDF2) sin afectar la lógica de login.
+- **Patrón Observer (Observador / Señales):** Presente a través de las *Signals* de Django, que permiten notificar de forma desacoplada a diferentes partes del sistema cuando ocurre un evento (como el registro de un objeto en BD).
+
+### Principios de Programación
 - **Principio DRY (Don't Repeat Yourself):** Reutilización de plantillas base (`base.html`), herencia de plantillas (`{% extends %}`) y uso de bucles (`{% for %}`) para evitar la duplicación de código en la UI.
 - **Principios SOLID aplicados:**
-  - **S (Single Responsibility):** Cada función en `views.py` tiene una única responsabilidad (ej. `api_reports` solo carga reportes).
-  - **O (Open/Closed):** Modelos diseñados para ser extendidos sin modificar su núcleo (ej. herencia de `AbstractUser`).
+  - **S (Single Responsibility):** Cada función en `views.py` tiene una única responsabilidad.
+  - **O (Open/Closed):** Modelos diseñados para ser extendidos sin modificar su núcleo.
 
 ## 🛠️ Instalación y Ejecución
 
