@@ -615,3 +615,37 @@ input:checked + .slider::before { transform: translateX(16px); }
     box-shadow: 0 0 0 3px rgba(176,38,255,0.15);
 }
 .report-form-card option { background: #1a0b2e; }
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        border-right: none;
+        border-bottom: 1px solid rgba(176,38,255,0.15);
+    }
+    .main-content {
+        padding: 20px 15px;
+    }
+    .top-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    .search-bar {
+        width: 100%;
+    }
+    .search-bar input {
+        width: 100%;
+    }
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    .hero-actions {
+        flex-direction: column;
+    }
+}
