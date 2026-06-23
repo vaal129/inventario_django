@@ -22,6 +22,12 @@ El panel de administración funciona como una **Single Page Application (SPA)**,
 - **Gestión de Usuarios:** Ver, crear y editar usuarios.
 - **Reportes (RF-33 a RF-36):** Los administradores pueden visualizar el historial de reportes o sugerencias registrados, con validación de estado.
 - **Notificaciones Globales (RF-37 a RF-39):** Los administradores pueden enviar notificaciones globales visibles.
+- **Gestión de Estaciones:** Activar y desactivar el funcionamiento de las estaciones del metro en tiempo real.
+
+### 3. Funcionalidades de Valor Agregado
+- **Exportación de Datos:** Los administradores pueden descargar todo el historial de reportes en formato Excel (CSV) con un solo clic.
+- **Gestión de Perfil:** Todo usuario (pasajero o administrador) puede editar de forma segura su nombre, apellido y correo electrónico.
+- **Diseño Responsivo (Mobile-First):** La interfaz se adapta automáticamente a dispositivos móviles usando Media Queries, reorganizando el menú lateral y las tablas para una lectura perfecta en cualquier pantalla.
 
 ## 🔒 4 Capas de Seguridad Implementadas
 
